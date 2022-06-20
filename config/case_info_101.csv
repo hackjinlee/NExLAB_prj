@@ -1,0 +1,102 @@
+ID,sex,age,class,date,Pathology,T,N,M,TNM stage,fold
+1,M,76,Malignant,20.04.08,PDAC,3,1.0,0.0,IIB,1.0
+2,F,70,Benign,20.04.10,Cholecystitis,,,,,3.0
+3,F,39,Benign,20.04.10,Chronic cholecystitis,,,,,2.0
+4,F,65,Benign,20.04.10,Serous cystadenoma Pancreas,,,,,4.0
+5,F,40,Benign,20.07.08,Chronic cholecystitis,,,,,1.0
+6,M,61,Benign,20.07.08,Chronic cholecystitis marked,,,,,0.0
+7,M,57,Benign,20.07.08,Cholesterol polyps,,,,,1.0
+8,F,75,Benign,20.07.08,Chronic cholecystitis,,,,,3.0
+9,M,52,Benign,20.07.08,Cholesterolosis,,,,,2.0
+12,F,69,Malignant,20.07.16,PDAC,2,1.0,0.0,IIB,0.0
+15,M,80,Malignant,20.07.20,PDAC,2,2.0,0.0,III,0.0
+16,M,62,Benign,20.07.21,IPMN,,,,,0.0
+17,M,63,Malignant,20.07.21,PDAC,2,0.0,0.0,IB,0.0
+18,F,61,Benign,20.07.22,Mucinous cystic neoplasm,,,,,4.0
+19,M,66,Malignant,20.07.22,PDAC,2,2.0,0.0,III,3.0
+20,M,24,Benign,20.07.22,Adenomyomatous,,,,,3.0
+21,M,41,Benign,20.07.22,Cholesterolosis,,,,,0.0
+22,F,47,Benign,20.07.22,Cholesterol polyps,,,,,2.0
+23,F,51,Benign,20.07.22,Chronic cholecystitis,,,,,4.0
+24,F,43,Benign,20.07.22,Cholesterol polyp,,,,,1.0
+26,F,68,Malignant,20.07.23,PDAC,2,1.0,0.0,IIB,2.0
+25,F,47,Benign,20.07.23,Mucinous cystic neoplasm,,,,,4.0
+27,F,65,Benign,21.04.21,GB,,,,,3.0
+28,F,46,Benign,21.04.23,GB,,,,,0.0
+29,F,57,Benign,21.04.23,GB,,,,,2.0
+30,F,60,Benign,21.04.23,GB,,,,,1.0
+31,F,60,Benign,21.04.23,GB,,,,,1.0
+32,F,30,Benign,21.04.23,GB,,,,,3.0
+33,F,46,Benign,21.04.23,GB,,,,,0.0
+34,M,45,Benign,21.04.23,GB,,,,,4.0
+35,M,61,Benign,21.04.23,GB,,,,,2.0
+36,F,64,Benign,21.04.26,GB,,,,,4.0
+37,M,62,Benign,21.04.26,GB,,,,,0.0
+38,M,41,Benign,21.04.27,GB,,,,,1.0
+39,M,29,Benign,21.04.27,GB,,,,,2.0
+40,F,38,Benign,21.04.27,GB,,,,,3.0
+41,M,51,Benign,21.04.28,GB,,,,,4.0
+42,F,80,Benign,21.04.28,GB,,,,,2.0
+43,M,49,Benign,21.04.28,GB,,,,,3.0
+44,F,54,Benign,21.04.28,GB,,,,,1.0
+45,F,60,Benign,21.04.29,GB,,,,,0.0
+46,F,30,Benign,21.04.30,GB,,,,,0.0
+47,F,44,Benign,21.04.30,GB,,,,,3.0
+48,M,61,Benign,21.04.30,GB,,,,,1.0
+49,M,61,Benign,21.04.30,GB,,,,,2.0
+50,F,45,Benign,21.05.01,GB,,,,,4.0
+51,M,53,Benign,21.05.01,GB,,,,,0.0
+53,M,54,Benign,21.05.04,GB,,,,,1.0
+54,M,63,Benign,21.05.04,GB,,,,,2.0
+55,M,61,Benign,21.05.04,GB,,,,,4.0
+56,F,56,Benign,21.05.04,GB,,,,,3.0
+57,M,56,Benign,21.05.07,GB,,,,,1.0
+58,M,68,Benign,21.05.07,GB,,,,,4.0
+59,F,49,Benign,21.05.07,GB,,,,,3.0
+60,M,68,Benign,21.05.10,GB,,,,,0.0
+61,M,30,Benign,21.05.10,GB,,,,,2.0
+63,F,40,Benign,21.05.11,GB,,,,,3.0
+64,M,45,Benign,21.05.11,GB,,,,,0.0
+65,F,33,Benign,21.05.12,GB,,,,,2.0
+66,M,45,Benign,21.05.13,GB,,,,,1.0
+67,F,47,Benign,21.05.13,GB,,,,,4.0
+74,M,60,Malignant,,PDAC,3,1.0,0.0,IIB,4.0
+75,M,69,Malignant,,PDAC,3,0.0,0.0,IIA,4.0
+76,M,65,Malignant,,PDAC,3,1.0,0.0,IIB,3.0
+77,F,59,Malignant,,PDAC,3,1.0,0.0,IIB,2.0
+78,M,71,Malignant,,PDAC,3,1.0,0.0,IIB,4.0
+79,F,53,Malignant,,PDAC,3,1.0,0.0,IIB,0.0
+80,F,66,Malignant,,PDAC,1,0.0,0.0,IA,1.0
+81,M,51,Malignant,,PDAC,2,1.0,0.0,IIB,1.0
+82,M,54,Malignant,,PDAC,3,0.0,0.0,IIA,0.0
+83,F,76,Malignant,,PDAC,3,0.0,0.0,IIA,1.0
+84,F,60,Malignant,,PDAC,3,0.0,0.0,IIA,3.0
+85,F,78,Malignant,,PDAC,3,0.0,0.0,IIA,2.0
+86,M,60,Malignant,,PDAC,3,0.0,0.0,IIA,0.0
+87,F,72,Malignant,,PDAC,3,1.0,0.0,IIB,3.0
+88,M,70,Malignant,,PDAC,3,1.0,0.0,IIB,0.0
+89,F,69,Malignant,,PDAC,3,0.0,0.0,IIA,2.0
+90,F,62,Malignant,,PDAC,3,1.0,0.0,IIB,4.0
+91,M,74,Malignant,,PDAC,3,0.0,0.0,IIA,1.0
+92,M,59,Malignant,,PDAC,3,1.0,0.0,IIB,2.0
+93,F,42,Malignant,,PDAC,1,0.0,0.0,IA,4.0
+94,F,67,Malignant,,PDAC,3,1.0,0.0,IIB,1.0
+95,F,75,Malignant,,PDAC,3,1.0,0.0,IIB,3.0
+96,M,63,Malignant,,PDAC,3,1.0,0.0,IIB,4.0
+97,F,60,Malignant,,PDAC,3,1.0,0.0,IIB,3.0
+98,F,59,Malignant,,PDAC,3,1.0,0.0,IIB,1.0
+99,M,60,Malignant,,PDAC,3,0.0,0.0,IIA,4.0
+100,F,73,Malignant,,PDAC,3,0.0,0.0,IIA,3.0
+101,M,62,Malignant,,PDAC,2,0.0,0.0,IB,1.0
+102,F,49,Malignant,,PDAC,2,0.0,0.0,IB,3.0
+103,M,72,Malignant,,PDAC,2,0.0,0.0,IB,4.0
+104,F,51,Malignant,,PDAC,1c,1.0,0.0,IIB,2.0
+105,M,53,Malignant,,PDAC,2,1.0,0.0,IIB,0.0
+106,M,53,Malignant,,PDAC,2,0.0,0.0,IB,2.0
+107,M,74,Malignant,,PDAC,2,0.0,0.0,IB,3.0
+108,M,70,Malignant,,PDAC,2,1.0,0.0,IIB,2.0
+109,M,64,Malignant,,PDAC,1c,0.0,0.0,IA,0.0
+110,M,70,Malignant,,PDAC,1c,1.0,0.0,IIB,4.0
+111,F,77,Malignant,,PDAC,1c,1.0,0.0,IIB,1.0
+112,M,66,Malignant,,PDAC,2,1.0,0.0,IIB,3.0
+113,F,66,Malignant,,PDAC,1c,0.0,0.0,IA,2.0
