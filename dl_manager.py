@@ -32,6 +32,7 @@ class Metrics(enum.Enum):
 
     AUROC = 'AUROC'
     AUPRC = 'AUPRC'
+    G_MEAN = 'G-Mean'
 
 class Logger:
     '''
@@ -85,7 +86,7 @@ class DeepLearningManager:
         # self.spectra_number = int(config["spectra_number"])
         # self.spectrum_length = int(config["spectrum_length"])
         self.tolerance = int(config["tolerance"])
-        self.metric = Metrics.F1
+        self.metric = Metrics.G_MEAN
 
     def get_score(self, y_real, y_pred):
         if self.metric == Metrics.ACC:
@@ -93,7 +94,14 @@ class DeepLearningManager:
         elif self.n_classes == 1 and self.metric == Metrics.F1:
             score = f1_score(y_real, y_pred)
         elif self.metric == Metrics.F1:
-            score = f1_score(y_real, y_pred, average='macro')
+            score = f1_score(y_real, y_pred, average='micro')
+        elif self.metric == Metrics.G_MEAN:
+            if self.n_classes == 1:
+                metric = binary_evaluate(y_real, y_pred)
+            else:
+                metric, _ = multi_evaluate(y_real, y_pred)
+            sen, spe = metric[Metrics.SEN.value], metric[Metrics.SPE.value]
+            score = (sen * spe) ** 0.5
         return score
 
     def test_best(self, output_path, gpu_num=0):
@@ -200,7 +208,7 @@ class DeepLearningManager:
             if epoch == 0:
                 torch.save(model.state_dict(), best_path)
             elif val_score < 0.1 or train_score + 0.05 < val_score:
-                if 0.9 < train_score:
+                if 0.95 < train_score:
                     patience += 10
                 else:
                     patience += 1
@@ -208,7 +216,7 @@ class DeepLearningManager:
                 max_score = val_score
                 torch.save(model.state_dict(), best_path)
                 patience = 0
-            elif 0.9 < train_score:
+            elif 0.95 < train_score:
                 patience += 10
             else:
                 patience += 1
@@ -305,10 +313,19 @@ def run_batch_train(ver, network_type=NetTypes1D.CNN1D):
     config = cm.load()
     fold_num = int(config['fold_num'])
 
-    config['case_info_path'] = './config/case_info_160.csv'
-    # 입력 디렉토리 설정
     d_ver = ver // 10
-    config['pp_dir'] = 'D:/Dropbox/data/AI-Raman/220502/0%s_pp' % d_ver
+    if d_ver == 1:
+        config['case_info_path'] = './config/case_info_220628.csv'
+        config['pp_dir'] = 'D:/Dropbox/data/AI-Raman/220628/01_pp'
+    elif d_ver == 2:
+        config['case_info_path'] = './config/case_info_220628.csv'
+        config['pp_dir'] = 'D:/Dropbox/data/AI-Raman/220628/02_pp'
+    elif d_ver == 3:
+        config['case_info_path'] = './config/case_info_220629.csv'
+        config['pp_dir'] = 'D:/Dropbox/data/AI-Raman/220629/03_pp'
+    elif d_ver == 4:
+        config['case_info_path'] = './config/case_info_220629.csv'
+        config['pp_dir'] = 'D:/Dropbox/data/AI-Raman/220629/04_pp'
 
     c_ver = ver % 10
     # class 개수 선택
@@ -359,7 +376,7 @@ def run_batch_train(ver, network_type=NetTypes1D.CNN1D):
 
         y_real_total, y_pred_total = [], []
         s_real_total, s_pred_total = [], []
-        for fold_index in range(fold_num):
+        for fold_index in range(1, fold_num):
             # 5 fold cross validation 실행
             config["fold_index"] = str(fold_index)
             name2 = 'fold_%s' % fold_index
@@ -375,6 +392,7 @@ def run_batch_train(ver, network_type=NetTypes1D.CNN1D):
             y_pred_total.extend(y_pred)
             s_real_total.extend(samp_real)
             s_pred_total.extend(samp_pred)
+            break
 
         # 최종 성능 출력
         tag = '%s_%s' % (network_type.value, name1)

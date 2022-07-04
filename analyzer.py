@@ -291,3 +291,159 @@ def export_plot_3group():
     }
     plot_spectrum_group(organ2group, group2color, '2')
 
+
+def get_mae(original, reconstructed):
+    return np.mean(np.abs(original - reconstructed))
+
+
+def get_rmse(original, reconstructed):
+    return np.sqrt(((original - reconstructed) ** 2).mean())
+
+
+def get_prd(original, reconstructed):
+    return np.sqrt(((original - reconstructed) ** 2).sum() / (original ** 2).sum()) * 100.0
+
+
+def get_prdn(original, reconstructed):
+    avg = original.mean()
+    return np.sqrt(((original - reconstructed) ** 2).sum() / ((original - avg) ** 2).sum()) * 100.0
+
+
+def get_snr(original, reconstructed):
+    avg = original.mean()
+    return np.log(((original - avg) ** 2).sum() / ((original - reconstructed) ** 2).sum()) * 10.0
+
+
+def calculate_score(list1, list2, self_check=False, fnc=get_snr, max_iter=100):
+    indexes1 = list(range(len(list1)))
+    indexes2 = list(range(len(list2)))
+    shuffle(indexes1)
+    shuffle(indexes2)
+    iterator = 0
+    score_lst = []
+    for idx1 in indexes1:
+        for idx2 in indexes2:
+            if idx1 == idx2 and self_check:
+                continue
+            iterator += 1
+            s1, s2 = list1[idx1], list2[idx2]
+            score = fnc(s1, s2)
+            if np.isnan(score) == False and np.isinf(score) == False:
+                score_lst.append(score)
+            if iterator >= max_iter:
+                break
+    return score_lst
+
+
+def compare_old_and_new(remove_average=False):
+    old_dir = 'D:/Dropbox/data/AI-Raman/220629/04_old'
+    new_dir = 'D:/Dropbox/data/AI-Raman/220629/04_pp'
+    fig_dir = 'D:/Dropbox/data/AI-Raman/220629/04_fig'
+
+    f_lst = os.listdir(old_dir)
+    self_score_lst = []
+    for f_name in f_lst:
+        path = '%s/%s' % (new_dir, f_name)
+        old_mat = pd.read_csv(path).values
+        s_lst = []
+        for ci in range(1, old_mat.shape[1]):
+            spectrum = old_mat[:, ci]
+            if remove_average:
+                spectrum -= np.mean(spectrum)
+            s_lst.append(spectrum)
+
+        score_lst = calculate_score(s_lst, s_lst, True)
+        if len(score_lst) == 0:
+            print('error on %s file comparison' % f_name)
+        mean_score = np.mean(score_lst)
+        self_score_lst.append(mean_score)
+    min_s, max_s = np.min(self_score_lst), np.max(self_score_lst)
+    mean_s, med_s = np.mean(self_score_lst), np.median(self_score_lst)
+    sd_s = np.std(self_score_lst)
+    m1 = '===== self score =====\n'
+    m2 = 'Mean: %.1f, S.D: %.1f\n' % (mean_s, sd_s)
+    m3 = 'Min: %.1f, Median %.1f, Max: %.1f\n' % (min_s, med_s, max_s)
+    print(m1+m2+m3)
+
+    score_path = '%s/score_list.csv' % os.path.dirname(old_dir)
+    if os.path.exists(score_path):
+        score_dict = pd.read_csv(score_path).to_dict('list')
+    else:
+        score_dict = dict()
+    pid_lst, tot_score_lst = [], []
+    for f_name in f_lst:
+        pid = f_name.split('.')[0]
+        path = '%s/%s' % (old_dir, f_name)
+        old_mat = pd.read_csv(path).values
+        old_lst = []
+        for ci in range(1, old_mat.shape[1]):
+            spectrum = old_mat[:, ci]
+            if remove_average:
+                spectrum -= np.mean(spectrum)
+            old_lst.append(spectrum)
+        path = '%s/%s' % (new_dir, f_name)
+        new_mat = pd.read_csv(path).values
+        new_lst = []
+        for ci in range(1, new_mat.shape[1]):
+            spectrum = new_mat[:, ci]
+            if remove_average:
+                spectrum -= np.mean(spectrum)
+            new_lst.append(spectrum)
+        wave_numbers = new_mat[:, 0]
+
+        score_lst = calculate_score(old_lst, new_lst, False)
+        if len(score_lst) == 0:
+            print('error on %s file comparison' % pid)
+        mean_score = np.mean(score_lst)
+        pid_lst.append(pid)
+        tot_score_lst.append(mean_score)
+
+        # med_lst, sd_lst = np.median(old_mat[:, 1:], axis=1), np.std(old_mat[:, 1:], axis=1)
+        # lower_bound, upper_bound = med_lst - sd_lst, med_lst + sd_lst
+        # c, fc = 'blue', 'lightblue'
+        # plt.fill_between(wave_numbers, lower_bound, upper_bound, facecolor=fc, edgecolors='None', alpha=0.5)
+        # plt.plot(wave_numbers, med_lst, c=c)
+        #
+        # med_lst, sd_lst = np.median(new_mat[:, 1:], axis=1), np.std(new_mat[:, 1:], axis=1)
+        # lower_bound, upper_bound = med_lst - sd_lst, med_lst + sd_lst
+        # c, fc = 'red', 'lightcoral'
+        # plt.fill_between(wave_numbers, lower_bound, upper_bound, facecolor=fc, edgecolors='None', alpha=0.5)
+        # plt.plot(wave_numbers, med_lst, c=c)
+        # plt.title('%s: SNR=%.1fdB' % (pid, mean_score))
+        # #plt.show()
+        #
+        # output_path = '%s/%s.png' % (fig_dir, pid)
+        # plt.savefig(output_path, bbox_inches='tight')
+        # plt.close()
+
+    score_dict['pid'] = pid_lst
+    tag = os.path.basename(new_dir)
+    score_dict[tag] = tot_score_lst
+    pd.DataFrame(score_dict).to_csv(score_path, index=False)
+
+    min_s, max_s = np.min(tot_score_lst), np.max(tot_score_lst)
+    mean_s, med_s = np.mean(tot_score_lst), np.median(tot_score_lst)
+    sd_s = np.std(tot_score_lst)
+    m1 = '===== old vs new score =====\n'
+    m2 = 'Mean: %.1f, S.D: %.1f\n' % (mean_s, sd_s)
+    m3 = 'Min: %.1f, Median %.1f, Max: %.1f\n' % (min_s, med_s, max_s)
+    print(m1+m2+m3)
+
+
+def copy_old_to_old():
+    import shutil
+    config = ConfigManager().load()
+    case_info_path = config['case_info_path']
+
+    case_info = pd.read_csv(case_info_path)
+    fold_info = case_info['fold'].values
+    indexes = [i for i in range(len(fold_info)) if fold_info[i] == 1]
+    pid_lst = case_info.iloc[indexes, 0].values
+
+    src_dir = 'D:/Dropbox/data/AI-Raman/220502/01_pp'
+    des_dir = 'D:/Dropbox/data/AI-Raman/220629/04_old'
+
+    for pid in pid_lst:
+        src_path = '%s/%03d.csv' % (src_dir, int(pid))
+        des_path = '%s/%03d.csv' % (des_dir, int(pid))
+        shutil.copyfile(src_path, des_path)

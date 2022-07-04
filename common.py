@@ -117,6 +117,7 @@ class BatchProcessor:
 
             input_path = '%s/%s' % (input_dir, name)
             base_name = os.path.basename(input_path).split('.')[0]
+            base_name = '%03d' % int(base_name.split('_')[1])
             output_path = '%s/%s%s' % (output_dir, base_name, self.output_fmt)
 
             args_lst.append((input_path, output_path))

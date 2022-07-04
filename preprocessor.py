@@ -3,13 +3,12 @@ import pandas as pd
 import numpy as np
 
 
-def convert_txt2csv(input_path, output_path, remove_outlier=True):
+def convert_txt2csv(input_path, output_path):
     '''
     '.txt' format (raw data)을 '.csv' format 으로 변환
     (optional) removing the outlier
     :param input_path:
     :param output_path:
-    :param remove_outlier:
     :return:
     '''
     df = pd.read_csv(input_path, delimiter='\t', header=0)
@@ -32,8 +31,7 @@ def convert_txt2csv(input_path, output_path, remove_outlier=True):
     for key in key_lst:
         tag = 'time%s' % int(key)
         intensity_arr = np.array(time2inten_dict[key][::-1])
-        if remove_outlier:
-            intensity_arr = remove_outlier(intensity_arr)
+        intensity_arr = remove_outlier(intensity_arr)
 
         result_dict[tag] = intensity_arr
     pd.DataFrame(result_dict).to_csv(output_path, index=False)

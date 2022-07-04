@@ -20,22 +20,25 @@ def preprocess(split_fold=False):
 
 
 def test_dataset():
-    for fold_idx in range(5):
+    for fold_idx in range(1,2):
         dataset = SpectrumDataset(DataPurpose.Train, fold_idx)
-        for spectra, label, info in dataset:
-            x = dataset.wave_numbers
-            for s_idx in range(spectra.shape[0]):
-                y = spectra[s_idx, :]
-                plt.plot(x, y)
-            plt.show()
-            break
+        # for spectra, label, info in dataset:
+        #     x = dataset.wave_numbers
+        #     for s_idx in range(spectra.shape[0]):
+        #         y = spectra[s_idx, :]
+        #         plt.plot(x, y)
+        #     plt.show()
+        #     break
 
+        print('..%s fold %s spectrum %s cases' % (fold_idx, len(dataset), len(dataset.sid2size_dict)))
+
+        dataset = SpectrumDataset(DataPurpose.Validation, fold_idx)
         print('..%s fold %s spectrum %s cases' % (fold_idx, len(dataset), len(dataset.sid2size_dict)))
 
 
 def batch_train():
-    net_lst = {NetTypes1D.CNN1D, NetTypes1D.Resnet, NetTypes1D.ConvLSTM}
-    ver_lst = {32, 33, 34, 36}
+    net_lst = [NetTypes1D.CNN1D, NetTypes1D.Resnet, NetTypes1D.ConvLSTM]
+    ver_lst = [12, 13, 22, 23, 32, 33, 42, 43]
     for net_type in net_lst:
         for ver in ver_lst:
             run_batch_train(ver, net_type)
@@ -43,7 +46,8 @@ def batch_train():
 
 if __name__ == "__main__":
     print('NExLAB project 22-06-20')
-    # preprocess()
-    # batch_train
+    #preprocess()
+    #copy_old_to_old()
+    batch_train()
 
 
