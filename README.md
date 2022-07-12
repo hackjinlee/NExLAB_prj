@@ -1,4 +1,10 @@
 # NExLAB_prj
+0. 실행 환경
+    python 3.8.8
+    CUDA 10.2
+    pytorch 1.8.0
+    torchvision 0.9.0
+    package: numpy, pandas, tqdm, scikit-learn, scipy, matplotlib 등 
 
 1. config 폴더 설명
 
@@ -24,3 +30,10 @@
     2.7 spectrum_loader.py : custom file loader, data augmentation
 
     2.8 statistics.py : 각종 통계 관련 
+    
+    
+ 3. 실행 방법
+     raw 데이터를 준비하고 main.py를 실행합니다.
+     메인함수에서 전처리, 모델 학습, 성능 평가 별로 각각의 함수를 호출하는 식입니다.
+     전처리는 preprocess(), 모델 학습은 train_model(), 성능평가는 evaluate_model() 입니다.
+     이해를 돕기 위해 각 함수 내에 parameter 별로 주석을 달아놨습니다.
