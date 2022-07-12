@@ -115,9 +115,12 @@ class BatchProcessor:
             if not name.endswith(self.input_fmt):
                 continue
 
+            # 환자명 인식 후 3자리 정수값으로 출력하도록 설정
             input_path = '%s/%s' % (input_dir, name)
             base_name = os.path.basename(input_path).split('.')[0]
-            base_name = '%03d' % int(base_name.split('_')[1])
+            if '_' in base_name:
+                base_name = base_name.split('_')[1]
+            base_name = '%03d' % int(base_name)
             output_path = '%s/%s%s' % (output_dir, base_name, self.output_fmt)
 
             args_lst.append((input_path, output_path))

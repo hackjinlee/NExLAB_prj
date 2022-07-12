@@ -86,6 +86,10 @@ class DeepLearningManager:
         # self.spectra_number = int(config["spectra_number"])
         # self.spectrum_length = int(config["spectrum_length"])
         self.tolerance = int(config["tolerance"])
+        self.lr = float(config["lr"])
+        self.b1 = float(config["b1"])
+        self.b2 = float(config["b2"])
+        self.wd = float(config["wd"])
         self.metric = Metrics.G_MEAN
 
     def get_score(self, y_real, y_pred):
@@ -185,7 +189,8 @@ class DeepLearningManager:
             print('..old weight is detected %s' % start_epoch)
             start_epoch += 1
 
-        optim_c = torch.optim.Adam(model.parameters(), lr=1e-4, betas=(0.5, 0.999), weight_decay=1e-5)
+        lr, b1, b2, wd = self.lr, self.b1, self.b2, self.wd
+        optim_c = torch.optim.Adam(model.parameters(), lr=lr, betas=(b1, b2), weight_decay=wd)
         for epoch in range(start_epoch, num_epochs):
             # 각 epoch 별로 모델 학습 > 검증 반복
             train_set = SpectrumDataset(DataPurpose.Train, self.fold_index, self.config)
@@ -225,6 +230,7 @@ class DeepLearningManager:
             print(msg)
             if patience >= self.tolerance:
                 break
+
 
     def _run(self, data_purpose, net_C, device, loader, epoch='E', optim_c=None):
         '''
