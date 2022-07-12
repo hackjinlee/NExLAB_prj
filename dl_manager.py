@@ -91,6 +91,7 @@ class DeepLearningManager:
         self.b2 = float(config["b2"])
         self.wd = float(config["wd"])
         self.metric = Metrics.G_MEAN
+        self.export_all_weight = False
 
     def get_score(self, y_real, y_pred):
         if self.metric == Metrics.ACC:
@@ -207,6 +208,10 @@ class DeepLearningManager:
             val_score = self.get_score(y_real, y_pred)
             logger.log(str(epoch), {"train_loss": train_loss, 'val_loss': val_loss,
                                     'train_score': train_score, 'vali_score': val_score})
+
+            if self.export_all_weight:
+                weight_path = '%s/w_%s.pt' % (self.output_dir, epoch)
+                torch.save(model.state_dict(), weight_path)
 
             # 학습 성능과 검증 성능을 비교하여 early stropping 적용
             best_path = '%s/best.pt' % self.output_dir
